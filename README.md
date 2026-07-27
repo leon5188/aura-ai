@@ -62,12 +62,16 @@
 1. 在 Xcode 中打开 target 的 **Signing & Capabilities**。
 2. 点击 **+ Capability**，添加 **Increased Memory Limit**。
 
-### 3. 集成 MLX Swift 官方推理引擎 (可选升级)
-在 Xcode 的 **Package Dependencies** 中导入官方仓库：
-```text
-https://github.com/ml-explore/mlx-swift
-```
-在 `LLMManager.swift` 中取消注释并引入 `import MLX` 和 `import MLXLLM` 即可接入本地 HuggingFace Qwen2.5-1.5B-Instruct-4bit 权重文件！
+### 3. MLX Swift 端侧推理引擎 (已接入)
+`LLMManager.swift` 已通过 Swift Package `https://github.com/ml-explore/mlx-swift-examples`
+（`MLXLLM` + `MLXLMCommon`）接入真实的本地推理，模型为
+`mlx-community/Qwen2.5-1.5B-Instruct-4bit`。App 首次启动时会通过 Hugging Face Hub
+联网下载权重（约 0.8~1GB）并缓存到设备本地，之后离线可用。
+
+**重要：MLX 依赖 Metal GPU，iOS 模拟器无法正确初始化 Metal 设备（会直接 abort），
+必须连接真机（iPhone/iPad）运行验证。** 真机首次运行前请确保：
+- Xcode 已安装 Metal Toolchain（`xcodebuild -downloadComponent MetalToolchain`）。
+- 设备联网，首次启动会自动下载模型权重。
 
 ---
 
