@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key> Privacy - Contacts Usage Description</key>
+	<string> 本应用需要访问通讯录以查找电话</string>
+	<key> Privacy - Microphone Usage Description</key>
+	<string> 本应用需要使用麦克风以接收语</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict/>
+	</array>
+</dict>
+</plist>
