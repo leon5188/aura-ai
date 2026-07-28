@@ -48,11 +48,16 @@ public final class IntentParser {
     private static func fallbackRegexParse(from text: String) -> ParsedIntent? {
         if text.contains("打电话") || text.contains("拨打") || text.contains("call") {
             // 简单匹配姓名
-            return ParsedIntent(action: .call, targetName: extractName(from: text), subject: nil, body: nil, reply: nil)
+            return ParsedIntent(action: .call, targetName: extractName(from: text), subject: nil, body: nil, title: nil, startTime: nil, reply: nil)
         } else if text.contains("发邮件") || text.contains("撰写邮件") || text.contains("email") {
-            return ParsedIntent(action: .sendEmail, targetName: extractName(from: text), subject: "系统智能生成邮件", body: text, reply: nil)
+            return ParsedIntent(action: .sendEmail, targetName: extractName(from: text), subject: "系统智能生成邮件", body: text, title: nil, startTime: nil, reply: nil)
+        } else if text.contains("提醒") || text.contains("记住") || text.contains("reminder") {
+            return ParsedIntent(action: .createReminder, targetName: nil, subject: nil, body: nil, title: text, startTime: nil, reply: nil)
+        } else if text.contains("日程") || text.contains("日历") || text.contains("开会") || text.contains("event") {
+            return ParsedIntent(action: .createEvent, targetName: nil, subject: nil, body: nil, title: text, startTime: "今天", reply: nil)
         }
-        return ParsedIntent(action: .unknown, targetName: nil, subject: nil, body: nil, reply: "未能在文本中确定操作")
+        return ParsedIntent(action: .unknown, targetName: nil, subject: nil, body: nil, title: nil, startTime: nil, reply: "未能在文本中确定操作")
+
     }
     
     private static func extractName(from text: String) -> String? {

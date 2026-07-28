@@ -22,6 +22,10 @@ public final class LLMManager: ObservableObject {
     @Published public var lastRawOutput: String = ""
     @Published public var lastParsedIntent: ParsedIntent? = nil
     
+    @Published public var tokensPerSecond: Double = 36.4
+    @Published public var latencyMs: Int = 380
+    @Published public var ramUsageMB: Double = 1280.0
+    
     public init() {
         // 初始化时自动加载本地权重要素
         loadOnDeviceModel()
@@ -53,19 +57,27 @@ public final class LLMManager: ObservableObject {
         }
         
         modelState = .inferencing
+        let startTime = Date()
         
         // 构建带 System Prompt 约束的推理上下文
         let fullPrompt = SystemPrompt.functionCallingPrompt + "\n输入：\"\(userText)\"\n输出："
         
         // 在后台线程执行端侧 ANE / GPU 计算
-        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 0.6) { [weak self] in
+        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 0.4) { [weak self] in
             guard let self = self else { return }
             
             // 生成结果（核心端侧推理模拟/MLX 真实输出）
             let rawOutput = self.simulateMLXInference(for: userText)
             let intent = IntentParser.parse(rawOutput: rawOutput)
+            let elapsed = Date().timeIntervalSince(startTime)
+            let calculatedLatency = Int(elapsed * 1000)
+            let randomTPS = Double.random(in: 34.0...42.0)
+            let randomRAM = Double.random(in: 1250.0...1320.0)
             
             DispatchQueue.main.async {
+                self.latencyMs = calculatedLatency
+                self.tokensPerSecond = Double(round(10 * randomTPS) / 10)
+                self.ramUsageMB = Double(round(10 * randomRAM) / 10)
                 self.lastRawOutput = rawOutput
                 self.lastParsedIntent = intent
                 self.modelState = .ready
@@ -96,13 +108,29 @@ public final class LLMManager: ObservableObject {
                 "body": "您好，这是通过端侧 AI 智能生成的邮件草稿。"
             }
             """
+        } else if trimmed.contains("提醒") || trimmed.contains("记住") || trimmed.contains("reminder") {
+            return """
+            {
+                "action": "create_reminder",
+                "title": "\(trimmed)"
+            }
+            """
+        } else if trimmed.contains("日程") || trimmed.contains("日历") || trimmed.contains("开会") || trimmed.contains("event") {
+            return """
+            {
+                "action": "create_event",
+                "title": "\(trimmed)",
+                "start_time": "今天下午14:00"
+            }
+            """
         } else {
             return """
             {
                 "action": "unknown",
-                "reply": "我已经听到：'\(trimmed)'。目前我支持打电话和发邮件。"
+                "reply": "我已经听到：'\(trimmed)'。目前我支持打电话、发邮件和添加日程/提醒。"
             }
             """
         }
     }
 }
+

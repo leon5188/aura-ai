@@ -9,11 +9,21 @@
 import SwiftUI
 
 public enum CyberTab: String, CaseIterable {
-    case home = "Home"
-    case chat = "Chat"
-    case aiCore = "AI"
-    case tools = "Tools"
-    case profile = "Profile"
+    case home
+    case chat
+    case aiCore
+    case tools
+    case profile
+    
+    public var displayName: String {
+        switch self {
+        case .home: return LanguageManager.shared.text(.tabHome)
+        case .chat: return LanguageManager.shared.text(.tabChat)
+        case .aiCore: return LanguageManager.shared.text(.tabAI)
+        case .tools: return LanguageManager.shared.text(.tabTools)
+        case .profile: return LanguageManager.shared.text(.tabProfile)
+        }
+    }
     
     var icon: String {
         switch self {
@@ -27,6 +37,7 @@ public enum CyberTab: String, CaseIterable {
 }
 
 public struct FloatingTabBar: View {
+    @ObservedObject private var langManager = LanguageManager.shared
     @Binding public var selectedTab: CyberTab
     public var onMicTapped: () -> Void
     
@@ -59,7 +70,7 @@ public struct FloatingTabBar: View {
                         VStack(spacing: 4) {
                             Image(systemName: tab.icon)
                                 .font(.system(size: 18))
-                            Text(tab.rawValue)
+                            Text(tab.displayName)
                                 .font(.system(size: 10, weight: .medium))
                         }
                         .foregroundColor(selectedTab == tab ? CyberTheme.electricCyan : Color.gray)

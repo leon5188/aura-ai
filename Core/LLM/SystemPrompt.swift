@@ -24,7 +24,16 @@ public enum SystemPrompt {
        - subject (String, 可选): 邮件主题
        - body (String, 可选): 邮件正文
 
-    3. 未知或不支持操作 (action: "unknown")
+    3. 创建提醒事项 (action: "create_reminder")
+       参数：
+       - title (String): 提醒事项标题内容
+
+    4. 添加日历日程 (action: "create_event")
+       参数：
+       - title (String): 日程标题
+       - start_time (String, 可选): 开始时间
+
+    5. 未知或不支持操作 (action: "unknown")
        参数：
        - reply (String): 简短友好的回复
 
@@ -32,11 +41,11 @@ public enum SystemPrompt {
     输入："帮我给张三打个电话"
     输出：{"action": "call", "target_name": "张三"}
 
-    输入："给李四发封邮件，主题是开会，内容是下午两点在三楼会议室"
-    输出：{"action": "send_email", "target_name": "李四", "subject": "开会", "body": "下午两点在三楼会议室"}
+    输入："提醒我明天下午三点开会"
+    输出：{"action": "create_reminder", "title": "明天下午三点开会"}
 
     输入："今天天气怎么样"
-    输出：{"action": "unknown", "reply": "抱歉，目前我专注帮助您打电话和发邮件。"}
+    输出：{"action": "unknown", "reply": "抱歉，目前我专注帮助您拨打电话、发邮件和管理日程。"}
 
     请解析以下用户输入：
     """
@@ -46,14 +55,18 @@ public enum SystemPrompt {
 public enum ActionType: String, Codable {
     case call = "call"
     case sendEmail = "send_email"
+    case createReminder = "create_reminder"
+    case createEvent = "create_event"
     case unknown = "unknown"
 }
 
-public struct ParsedIntent: Codable {
+public struct ParsedIntent: Codable, Equatable {
     public let action: ActionType
     public let targetName: String?
     public let subject: String?
     public let body: String?
+    public let title: String?
+    public let startTime: String?
     public let reply: String?
     
     enum CodingKeys: String, CodingKey {
@@ -61,6 +74,9 @@ public struct ParsedIntent: Codable {
         case targetName = "target_name"
         case subject
         case body
+        case title
+        case startTime = "start_time"
         case reply
     }
 }
+

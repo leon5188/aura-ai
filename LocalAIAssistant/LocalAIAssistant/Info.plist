@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>本应用需要使用摄像头，以便"实时视觉眼"功能识别您对准的物品、文档或画面内容，识别过程完全在设备本地完成。</string>
 	<key>NSContactsUsageDescription</key>
 	<string>本应用需要访问通讯录，以根据您的语音指令查找联系人电话号码或邮箱。</string>
 	<key>NSMicrophoneUsageDescription</key>

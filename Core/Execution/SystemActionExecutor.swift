@@ -26,24 +26,50 @@ public final class SystemActionExecutor: NSObject, ObservableObject {
         switch intent.action {
         case .call:
             guard let name = intent.targetName, !name.isEmpty else {
-                alertMessage = "未提供联系人姓名"
+                alertMessage = LanguageManager.shared.text(.alertNoContactName)
                 return
             }
             executePhoneCall(targetName: name)
             
         case .sendEmail:
             guard let name = intent.targetName, !name.isEmpty else {
-                alertMessage = "未提供收件人姓名"
+                alertMessage = LanguageManager.shared.text(.alertNoRecipientName)
                 return
             }
             executeMailComposer(targetName: name, subject: intent.subject, body: intent.body)
             
+        case .createReminder:
+            let reminderTitle = intent.title ?? "新提醒事项"
+            ReminderCalendarManager.shared.createReminder(title: reminderTitle) { [weak self] success, message in
+                DispatchQueue.main.async {
+                    self?.alertMessage = message
+                    if success {
+                        TextToSpeechManager.shared.speak(message)
+                    }
+                }
+            }
+            
+        case .createEvent:
+            let eventTitle = intent.title ?? "新日历行程"
+            let now = Date()
+            let endDate = now.addingTimeInterval(3600)
+            ReminderCalendarManager.shared.createEvent(title: eventTitle, startDate: now, endDate: endDate) { [weak self] success, message in
+                DispatchQueue.main.async {
+                    self?.alertMessage = message
+                    if success {
+                        TextToSpeechManager.shared.speak(message)
+                    }
+                }
+            }
+            
         case .unknown:
             if let reply = intent.reply {
                 alertMessage = reply
+                TextToSpeechManager.shared.speak(reply)
             }
         }
     }
+
     
     // MARK: - Phone Call Trigger
     private func executePhoneCall(targetName: String) {
@@ -55,10 +81,10 @@ public final class SystemActionExecutor: NSObject, ObservableObject {
                 if let url = URL(string: "tel://\(cleanPhone)"), UIApplication.shared.canOpenURL(url) {
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
                 } else {
-                    self.alertMessage = "设备不支持拨打电话功能"
+                    self.alertMessage = LanguageManager.shared.text(.alertCallNotSupported)
                 }
             } else {
-                self.alertMessage = "通讯录中未找到名为 '\(targetName)' 的有效电话号码"
+                self.alertMessage = LanguageManager.shared.text(.alertContactNotFound(name: targetName))
             }
         }
     }
@@ -72,8 +98,8 @@ public final class SystemActionExecutor: NSObject, ObservableObject {
             let draft = EmailDraftModel(
                 recipientName: targetName,
                 recipientEmail: email,
-                subject: subject ?? "本地 AI 智能通知",
-                body: body ?? "您好，这是通过 iPhone 端侧 AI 快速生成的邮件。"
+                subject: subject ?? LanguageManager.shared.text(.emailDefaultSubject),
+                body: body ?? LanguageManager.shared.text(.emailDefaultBody)
             )
             
             DispatchQueue.main.async {

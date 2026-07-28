@@ -290,11 +290,11 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LocalAIAssistant/Info.plist;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
+				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "本应用需要访问日历，以查询您的日程安排。";
 				INFOPLIST_KEY_NSContactsUsageDescription = "本应用需要访问通讯录，以根据您的语音指令查找联系人电话号码或邮箱。";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "本应用需要使用麦克风以接收您的语音输入。";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "本应用需要使用离线语音识别功能，将您的语音转为文字控制指令，过程完全在本地完成。";
 				INFOPLIST_KEY_NSRemindersUsageDescription = "本应用需要访问提醒事项，以便根据您的语音指令创建真实的系统提醒。";
-				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "本应用需要访问日历，以查询您的日程安排。";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "本应用需要使用离线语音识别功能，将您的语音转为文字控制指令，过程完全在本地完成。";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -342,11 +342,11 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LocalAIAssistant/Info.plist;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
+				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "本应用需要访问日历，以查询您的日程安排。";
 				INFOPLIST_KEY_NSContactsUsageDescription = "本应用需要访问通讯录，以根据您的语音指令查找联系人电话号码或邮箱。";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "本应用需要使用麦克风以接收您的语音输入。";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "本应用需要使用离线语音识别功能，将您的语音转为文字控制指令，过程完全在本地完成。";
 				INFOPLIST_KEY_NSRemindersUsageDescription = "本应用需要访问提醒事项，以便根据您的语音指令创建真实的系统提醒。";
-				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "本应用需要访问日历，以查询您的日程安排。";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "本应用需要使用离线语音识别功能，将您的语音转为文字控制指令，过程完全在本地完成。";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
