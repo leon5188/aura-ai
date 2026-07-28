@@ -10,7 +10,7 @@ import SwiftUI
 
 public struct MainDashboardView: View {
     @StateObject private var speechManager = SpeechRecognizerManager()
-    @StateObject private var llmManager = LLMManager()
+    @StateObject private var llmManager = LLMManager.shared
     @StateObject private var actionExecutor = SystemActionExecutor()
     @StateObject private var ttsManager = TTSSpeechManager.shared
     

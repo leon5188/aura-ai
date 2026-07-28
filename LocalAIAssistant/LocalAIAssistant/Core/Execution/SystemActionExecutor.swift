@@ -160,12 +160,30 @@ public final class SystemActionExecutor: NSObject, ObservableObject {
     
     // MARK: - Add Reminder Trigger
     private func executeAddReminder(title: String, timeDescription: String?) {
-        let info = LocalizationHelper.isChineseSystem ?
-            "【提醒事项创建成功】\n内容: \(title)\n时间: \(timeDescription ?? "今天")" :
-            "[Reminder Created]\nTitle: \(title)\nTime: \(timeDescription ?? "Today")"
-        
-        DispatchQueue.main.async {
-            self.alertMessage = info
+        ReminderManager.shared.createReminder(title: title, timeDescription: timeDescription) { [weak self] result in
+            guard let self = self else { return }
+            let isZh = LocalizationHelper.isChineseSystem
+
+            switch result {
+            case .success(let parsedDate):
+                let timeText: String
+                if let parsedDate {
+                    let formatter = DateFormatter()
+                    formatter.locale = Locale(identifier: isZh ? "zh_CN" : "en_US")
+                    formatter.dateFormat = isZh ? "M月d日 HH:mm" : "MMM d, HH:mm"
+                    timeText = formatter.string(from: parsedDate)
+                } else {
+                    timeText = timeDescription ?? (isZh ? "未指定具体时间" : "No specific time")
+                }
+                self.alertMessage = isZh ?
+                    "【提醒事项已写入系统】\n内容: \(title)\n时间: \(timeText)" :
+                    "[Reminder Saved to System]\nTitle: \(title)\nTime: \(timeText)"
+
+            case .failure(let error):
+                self.alertMessage = isZh ?
+                    "【提醒事项创建失败】\(error.localizedDescription)" :
+                    "[Reminder Failed] \(error.localizedDescription)"
+            }
         }
     }
 }

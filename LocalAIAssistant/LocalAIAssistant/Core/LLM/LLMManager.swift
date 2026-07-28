@@ -20,6 +20,10 @@ public enum LLMModelState {
 }
 
 public final class LLMManager: ObservableObject {
+    // 全局单例：模型权重只加载一次、常驻内存，工具矩阵里其他功能（代码排错、网页总结等）
+    // 复用同一个已加载好的 modelContainer 做一次性文本生成，而不必各自重新加载一份 1.5B 模型。
+    public static let shared = LLMManager()
+
     @Published public var modelState: LLMModelState = .unloaded
     @Published public var lastRawOutput: String = ""
     @Published public var lastParsedIntent: ParsedIntent? = nil
@@ -32,7 +36,7 @@ public final class LLMManager: ObservableObject {
 
     private let generateParameters = GenerateParameters(maxTokens: 220, temperature: 0.4)
 
-    public init() {
+    private init() {
         loadOnDeviceModel()
     }
 
@@ -110,6 +114,24 @@ public final class LLMManager: ObservableObject {
                     completion(nil)
                 }
             }
+        }
+    }
+
+    // MARK: - 通用一次性文本生成（不走 function-calling JSON 包装）
+    // 给"代码/办公排错"、"网页总结"这类工具调用：复用同一个已加载的端侧模型，
+    // 直接返回模型的自然语言输出，不解析成 ParsedIntent。
+    public func generateRawText(systemPrompt: String, userInput: String) async -> String {
+        guard case .ready = modelState, let container = modelContainer else {
+            return "端侧模型尚未加载完成，请稍后再试。"
+        }
+
+        let fullPrompt = systemPrompt + "\n\n用户输入：\n\(userInput)"
+
+        do {
+            let session = ChatSession(container, generateParameters: generateParameters)
+            return try await session.respond(to: fullPrompt)
+        } catch {
+            return "端侧推理失败：\(error.localizedDescription)"
         }
     }
 }
