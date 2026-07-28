@@ -46,7 +46,6 @@ public struct ToolsView: View {
                     // 黑科技 1: 实时同声传译
                     ToolCard(
                         icon: "character.bubble.fill",
-                        iconColors: IconPalette.skyBlue,
                         title: isZh ? "实时同声传译" : "Simultaneous Interpretation",
                         subtitle: isZh ? "中英双向语音同传与双语字幕" : "Real-time bilingual translation",
                         category: isZh ? "同声传译" : "Translation"
@@ -57,7 +56,6 @@ public struct ToolsView: View {
                     // 黑科技 2: 摄像头实时视觉眼
                     ToolCard(
                         icon: "camera.viewfinder",
-                        iconColors: IconPalette.orange,
                         title: isZh ? "摄像头实时视觉眼" : "Camera Vision",
                         subtitle: isZh ? "实时画面识别与智能解答" : "Real-time visual OCR & QA",
                         category: isZh ? "多模态视觉" : "Camera Vision"
@@ -68,7 +66,6 @@ public struct ToolsView: View {
                     // 黑科技 3: 组合宏动作链 (晚安模式)
                     ToolCard(
                         icon: "moon.stars.fill",
-                        iconColors: IconPalette.indigo,
                         title: isZh ? "一键晚安宏动作" : "Sleep Macro",
                         subtitle: isZh ? "一句话设闹钟+勿扰+日程" : "Chained sleep macro",
                         category: isZh ? "系统宏动作" : "Macro Chain"
@@ -81,7 +78,6 @@ public struct ToolsView: View {
                     // 4. 拨打电话
                     ToolCard(
                         icon: "phone.fill",
-                        iconColors: IconPalette.whatsapp,
                         title: isZh ? "拨打电话" : "Phone Call",
                         subtitle: isZh ? "搜索通讯录一键呼叫" : "Search contacts and call",
                         category: isZh ? "系统通讯" : "Telephony"
@@ -92,7 +88,6 @@ public struct ToolsView: View {
                     // 5. 发送短信
                     ToolCard(
                         icon: "message.fill",
-                        iconColors: IconPalette.spotify,
                         title: isZh ? "发送短信" : "Send SMS",
                         subtitle: isZh ? "语音生成并快速发短信" : "Draft and send SMS text",
                         category: isZh ? "系统通讯" : "Messaging"
@@ -103,7 +98,6 @@ public struct ToolsView: View {
                     // 6. 发送邮件
                     ToolCard(
                         icon: "envelope.fill",
-                        iconColors: IconPalette.facebook,
                         title: isZh ? "发送邮件" : "Send Email",
                         subtitle: isZh ? "草拟并拉起系统邮件" : "Draft and compose email",
                         category: isZh ? "办公协作" : "Office"
@@ -114,7 +108,6 @@ public struct ToolsView: View {
                     // 7. 创建提醒事项
                     ToolCard(
                         icon: "bell.fill",
-                        iconColors: IconPalette.sunGold,
                         title: isZh ? "添加提醒" : "Add Reminder",
                         subtitle: isZh ? "写入系统日历与日程" : "Create event & reminder",
                         category: isZh ? "日程管理" : "Schedule"
@@ -125,7 +118,6 @@ public struct ToolsView: View {
                     // 8. 跨软件打开与搜索
                     ToolCard(
                         icon: "arrow.up.forward.app.fill",
-                        iconColors: IconPalette.pink,
                         title: isZh ? "跨软件路由" : "App Routing",
                         subtitle: isZh ? "微信与淘宝一键跳转" : "Open WeChat & Taobao",
                         category: isZh ? "系统自动化" : "Automation"
@@ -136,7 +128,6 @@ public struct ToolsView: View {
                     // 9. 图像文字识图
                     ToolCard(
                         icon: "doc.viewfinder.fill",
-                        iconColors: IconPalette.teal,
                         title: isZh ? "图片提取文字" : "Vision OCR",
                         subtitle: isZh ? "离线识别提取图片文字" : "Extract text from image",
                         category: isZh ? "多媒体处理" : "Vision"
@@ -147,7 +138,6 @@ public struct ToolsView: View {
                     // 10. 多模态视频生成
                     ToolCard(
                         icon: "video.fill",
-                        iconColors: IconPalette.crimson,
                         title: isZh ? "视频模型生成" : "Video Generation",
                         subtitle: isZh ? "高质量文字转视频渲染" : "Generate 4K AI Video",
                         category: isZh ? "音视频生成" : "Multimodal"
@@ -160,7 +150,6 @@ public struct ToolsView: View {
                     // 11. 网页侧边栏总结
                     ToolCard(
                         icon: "safari.fill",
-                        iconColors: IconPalette.cyanBlue,
                         title: isZh ? "网页总结与翻译" : "Web Summarizer",
                         subtitle: isZh ? "一键总结文章与字幕" : "Summarize web articles",
                         category: isZh ? "浏览器扩展" : "Browser"
@@ -173,7 +162,6 @@ public struct ToolsView: View {
                     // 12. 代码排错与办公诊断
                     ToolCard(
                         icon: "curlybraces.square.fill",
-                        iconColors: IconPalette.slate,
                         title: isZh ? "代码与办公排错" : "Code & Office Debug",
                         subtitle: isZh ? "诊断代码问题与分析" : "Analyze code bugs",
                         category: isZh ? "日常创作" : "DevTools"
@@ -198,7 +186,6 @@ public struct ToolsView: View {
 
 struct ToolCard: View {
     let icon: String
-    var iconColors: [Color] = IconPalette.cyanBlue
     let title: String
     let subtitle: String
     let category: String
@@ -211,7 +198,9 @@ struct ToolCard: View {
         }) {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                    GlossyIconBadge(icon, colors: iconColors, size: 36)
+                    Image(systemName: icon)
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(CyberTheme.electricCyan)
                     Spacer()
                     Text(category)
                         .font(.system(size: 9, weight: .bold))

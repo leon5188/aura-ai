@@ -20,7 +20,8 @@ public struct ActionInspectorView: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                GlossyIconBadge("cpu", colors: IconPalette.cyanBlue, size: 24, iconSize: 11)
+                Image(systemName: "cpu")
+                    .foregroundColor(CyberTheme.electricCyan)
                 Text("AI FUNCTION CALLING (JSON)")
                     .font(.system(size: 11, weight: .bold, design: .monospaced))
                     .foregroundColor(CyberTheme.electricCyan)

@@ -29,7 +29,14 @@ public struct SmartShortcutCard: View {
             action()
         }) {
             HStack(spacing: 12) {
-                GlossyIconBadge(icon, colors: [color, color.opacity(0.55)], size: 44)
+                ZStack {
+                    Circle()
+                        .fill(color.opacity(0.2))
+                        .frame(width: 44, height: 44)
+                    Image(systemName: icon)
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(color)
+                }
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)

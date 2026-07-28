@@ -17,7 +17,8 @@ public struct ProfileView: View {
                     .font(.system(size: 18, weight: .bold))
                     .foregroundColor(.white)
                 Spacer()
-                GlossyIconBadge("sparkles", colors: IconPalette.purpleGem, size: 28, iconSize: 13)
+                Image(systemName: "sparkles")
+                    .foregroundColor(CyberTheme.electricCyan)
             }
             .padding(.horizontal, 20)
             .padding(.top, 48)
@@ -53,7 +54,8 @@ public struct ProfileView: View {
                     // 2. ✨ 使用说明与启发卡片 (下任何指令，AURA 就能执行)
                     VStack(alignment: .leading, spacing: 12) {
                         HStack {
-                            GlossyIconBadge("book.fill", colors: IconPalette.cyanBlue, size: 26, iconSize: 12)
+                            Image(systemName: "book.fill")
+                                .foregroundColor(CyberTheme.electricCyan)
                             Text("AURA 使用说明 & 隐藏玩法")
                                 .font(.system(size: 15, weight: .bold))
                                 .foregroundColor(.white)
@@ -64,21 +66,18 @@ public struct ProfileView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             GuideBullet(
                                 icon: "mic.fill",
-                                iconColors: IconPalette.whatsapp,
                                 title: "直接自然语言下达指令",
                                 detail: "无需死记硬背固定按键与复杂菜单！按住下方 Siri 麦克风，像对朋友说话一样对 AURA 提出任何需求即可。"
                             )
 
                             GuideBullet(
                                 icon: "bolt.horizontal.circle.fill",
-                                iconColors: IconPalette.sunGold,
                                 title: "下什么指令，AURA 就能执行",
                                 detail: "尝试说：“给张三打个电话”、“发短信给李四约饭”、“提醒我下午三点开会”、“打开淘宝搜索无人机”、“实时同传”、“识图提取文字”，甚至直接对她说“晚安”！"
                             )
 
                             GuideBullet(
                                 icon: "sparkles.rectangle.stack.fill",
-                                iconColors: IconPalette.purpleGem,
                                 title: "探索无限可能",
                                 detail: "更多高级玩法由您直接发掘！日常闲聊、写诗作画、代码排错、网页总结... 随时向 AURA 下达新的挑战指令！"
                             )
@@ -89,10 +88,10 @@ public struct ProfileView: View {
 
                     // 3. 端侧安全与设置面板
                     VStack(spacing: 14) {
-                        ProfileRow(icon: "lock.shield.fill", iconColors: IconPalette.teal, title: "100% 离线端侧安全加密", detail: "数据不出手机")
-                        ProfileRow(icon: "waveform.path.ecg", iconColors: IconPalette.pink, title: "温柔清脆少女声音", detail: "自然句间顿挫")
-                        ProfileRow(icon: "cpu.fill", iconColors: IconPalette.indigo, title: "端侧内存占用", detail: "~1.2 GB (离线神经网络)")
-                        ProfileRow(icon: "app.badge.checkmark.fill", iconColors: IconPalette.facebook, title: "iOS 原生系统支持", detail: "已开启快捷集成")
+                        ProfileRow(icon: "lock.shield.fill", title: "100% 离线端侧安全加密", detail: "数据不出手机")
+                        ProfileRow(icon: "waveform.path.ecg", title: "温柔清脆少女声音", detail: "自然句间顿挫")
+                        ProfileRow(icon: "cpu.fill", title: "端侧内存占用", detail: "~1.2 GB (离线神经网络)")
+                        ProfileRow(icon: "app.badge.checkmark.fill", title: "iOS 原生系统支持", detail: "已开启快捷集成")
                     }
                     .padding(16)
                     .pure3DGlassStyle(cornerRadius: 20)
@@ -111,13 +110,15 @@ public struct ProfileView: View {
 
 struct GuideBullet: View {
     let icon: String
-    var iconColors: [Color] = IconPalette.cyanBlue
     let title: String
     let detail: String
 
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
-            GlossyIconBadge(icon, colors: iconColors, size: 26, iconSize: 12)
+            Image(systemName: icon)
+                .font(.system(size: 14))
+                .foregroundColor(CyberTheme.electricCyan)
+                .padding(.top, 2)
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(title)
@@ -134,13 +135,15 @@ struct GuideBullet: View {
 
 struct ProfileRow: View {
     let icon: String
-    var iconColors: [Color] = IconPalette.cyanBlue
     let title: String
     let detail: String
 
     var body: some View {
         HStack {
-            GlossyIconBadge(icon, colors: iconColors, size: 30, iconSize: 14)
+            Image(systemName: icon)
+                .font(.system(size: 18))
+                .foregroundColor(CyberTheme.electricCyan)
+                .frame(width: 24)
             Text(title)
                 .font(.system(size: 14, weight: .medium))
                 .foregroundColor(.white)

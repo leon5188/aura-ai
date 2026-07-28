@@ -48,7 +48,18 @@ public final class TTSSpeechManager: NSObject, ObservableObject, @unchecked Send
     // MARK: - Speak with Ultra-High Quality Voice Dynamics
     public func speak(text: String) {
         guard !text.isEmpty else { return }
-        
+
+        // 关键修复：语音识别会把音频会话切到 .record（纯录音、无播放通路）。
+        // 朗读前必须切回可播放的分类，否则合成器"说话"了但设备完全没有声音输出，
+        // 且 .record/.soloAmbient 默认还会被静音开关静音。
+        do {
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(.playback, mode: .default, options: [.duckOthers])
+            try session.setActive(true, options: .notifyOthersOnDeactivation)
+        } catch {
+            print("[TTSSpeechManager Error] 音频会话切换为播放模式失败: \(error.localizedDescription)")
+        }
+
         if synthesizer.isSpeaking {
             synthesizer.stopSpeaking(at: .immediate)
         }
